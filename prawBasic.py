@@ -15,14 +15,16 @@ reddit = praw.Reddit(client_id = chibConfig.id,
 subreddit = reddit.subreddit('askreddit')
 hot_askreddit = subreddit.hot(limit = 5)
 
-topics_dict = {'title':[], \
-               'score':[], \
+topics_dict = {'title':[], 
+               'score':[], 
                'id':[], 'url':[],
-               \
-               "comms_num":[], \
-               'created':[], \
-               'body':[] \
+               "comms_num":[], 
+               'created':[], 
+               'body':[] 
                }
+
+def get_date(created):
+    return dt.datetime.fromtimestamp(created)
 
 for submission in hot_askreddit:
     if not submission.stickied:
@@ -33,7 +35,10 @@ for submission in hot_askreddit:
         topics_dict['comms_num'].append(submission.num_comments)
         topics_dict['created'].append(submission.created)
         topics_dict['body'].append(submission.selftext)
-
+                  
 table_data = pd.DataFrame(topics_dict)
+
+_timestamp = table_data['created'].apply(get_date)
+table_data = table_data.assign(timestamp = _timestamp)
 
 print(table_data)
