@@ -13,7 +13,7 @@ reddit = praw.Reddit(client_id = chibConfig.id,
                      user_agent = 'RPi_Scraper')
 
 subreddit = reddit.subreddit('askreddit')
-hot_askreddit = subreddit.hot(limit = 5)
+hot_askreddit = subreddit.hot(limit = 6)
 
 topics_dict = {'title':[], 
                'score':[], 
@@ -26,6 +26,7 @@ topics_dict = {'title':[],
 def get_date(created):
     return dt.datetime.fromtimestamp(created)
 
+max_posts = 2
 for submission in hot_askreddit:
     if not submission.stickied:
         topics_dict['title'].append(submission.title)
@@ -42,3 +43,5 @@ _timestamp = table_data['created'].apply(get_date)
 table_data = table_data.assign(timestamp = _timestamp)
 
 print(table_data)
+
+table_data.to_csv('testChart.csv', index=False)
