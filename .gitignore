@@ -1,3 +1,4 @@
 chibConfig.py
 /__pycache__
 emailList.txt
+*.csv
